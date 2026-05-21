@@ -11,7 +11,7 @@ module.exports = function(req, res, next) {
 
   // 3. Verificar el token
   try {
-    const verificado = jwt.verify(token, 'SECRET_KEY')
+    const verificado = jwt.verify(token, process.env.SECRET_KEY)
     req.usuario = verificado  // ← añade los datos del usuario a la petición
     next()  // ← continúa a la ruta protegida
   } catch(error) {
