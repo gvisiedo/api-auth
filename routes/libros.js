@@ -9,6 +9,20 @@ router.get('/', async function(req, res) {
   res.json(libros)
 })
 
+router.get('/:id', async function(req,res){
+  try {
+    const libros = await Libro.findById(req.params.id)
+    if(!libros){
+      res.status(404).json({error: 'Libro no encontrado'})
+      return
+    }
+    res.json(libros)
+    
+  } catch (error) {
+    res.status(500).json({error: 'Libro no encontrado'})
+  }
+})
+
 // Ruta protegida — solo usuarios autenticados pueden crear
 router.post('/', authMiddleware, async function(req, res) {
   // authMiddleware se ejecuta antes de llegar aquí
@@ -21,4 +35,32 @@ router.post('/', authMiddleware, async function(req, res) {
     res.status(500).json({ error: 'Error al crear libro' })
   }
 
+})
+
+router.put('/:id', authMiddleware,async function (req, res ){  
+  try {
+    const libros = await Libro.findByIdAndUpdate(req.params.id, req.body,{new:true})
+    if(!libros){
+      res.status(404).json({error: 'Liro no encontrado'})
+      return
+    }
+    res.json(libros)
+    
+  } catch (error) {
+    res.status(500).json({error: 'Error al obtener el libro'})
+    
+  }
+})
+router.delete('/:id', authMiddleware, async function(req,res){
+  try {
+    const libros = await Libro.findByIdAndDelete(req.params.id)
+    if(!libros){
+      res.status(404).json({error: 'Liro no encontrado'})
+      return
+    }
+    res.json(libros)
+  } catch (error) {
+    res.status(500).json({error: 'Error al obtener el libro'})
+    
+  }
 })

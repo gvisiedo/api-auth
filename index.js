@@ -15,6 +15,9 @@ mongoose.connect('mongodb://localhost:27017/auth')
 const authRoutes = require('./routes/auth')
 app.use('/auth', authRoutes)
 
+const librosRoutes = require('./routes/libros')
+app.use('/libros', librosRoutes)
+
 app.listen(3000, function() {
   console.log('Servidor corriendo en http://localhost:3000')
 })
